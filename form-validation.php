@@ -2,9 +2,10 @@
 
 class form{
 
-  public $fname , $lname = "";
+  public $fname , $lname ,$result = "";
   public $fnameErr , $lnameErr , $imageErr= "";
   public $image_path="";
+  public $marks =[];
   
   // function to check obtained values
   public function validate(){
@@ -13,7 +14,7 @@ class form{
       if (empty($_POST["fname"])) {
         $this->fnameErr = "First Name is required.";
       } else {
-        $this->fname = $this->test_data($_POST["fname"]);
+        $this->fname = $this-> test_data($_POST["fname"]);
         if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
           $this->fnameErr = "Only alphabets are allowed for First Name.";
         }
@@ -52,7 +53,7 @@ class form{
             return;
       }
       if (move_uploaded_file($_FILES["image"]["tmp_name"], $image_file)) {
-        $this->image_path=$image_file;
+        $this->image_path = $image_file;
         
     } else {
         $this->imageErr="Sorry, there was an error uploading your file.";
@@ -60,12 +61,27 @@ class form{
 
     }
   }
+  // function to validate entered subject and marks
+  public function resultcheck(){
+    $this->result = $_POST["result"];
+    $lines=explode("\n",$this->result);
+    foreach($lines as $x){
+      $x= trim($x);
+      if(!empty($x)){
+        $item = explode("|",$x);
+        if(count($item)==2 && is_numeric($item[1])){
+          $this->marks[] = ["subject"=>trim($item[0]), "mark"=>trim($item[1])];
+        }
+      }
+    }
+  }
+  
 }
 // Creates object when the form is submitted successfully.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $input = new form();
   $input->imgcheck();
   $input->validate();
+  $input->resultcheck();
 }
-
 ?>

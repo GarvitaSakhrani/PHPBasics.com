@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form</title>
-  <!-- link for embedding jquey -->
+  <!-- links for embedding jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="./js/index.js"></script>
   <!-- css to display error message -->
@@ -37,6 +37,10 @@
   <span class="error">* <?php echo $input->imageErr;?></span>
   <br><br>
 
+  <label for="result">Enter Marks(Please enter in the format subject|marks, one perline):</label><br>
+  <textarea name="result" rows="5" cols="20"></textarea>
+  <br><br>
+  
   <input type="submit" value="Submit">
 </form>
 
@@ -47,6 +51,17 @@
   }
   if (!empty($input->fname) && !empty($input->lname) && empty($input->fnameErr) && empty($input->lnameErr)) {
       echo "<h1>Hello, $input->fname " . "$input->lname</h1>";
+  }
+  if(!empty($input->marks)){
+    echo "<table border=1>" ;
+    echo "<tr><th>Subject</th><th>Marks</th></tr>";
+    foreach($input->marks as $a){
+      echo "<tr>";
+      echo "<td>" . $a['subject'] . "</td>";
+      echo "<td>" . $a['mark'] . "</td>";
+      echo "</tr>";
+  }
+    echo "</table>";
   }
   ?>
 
