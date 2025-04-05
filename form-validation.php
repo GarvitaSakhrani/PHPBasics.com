@@ -1,7 +1,7 @@
 <?php
 
 class form{
- 
+
   public $fname , $lname , $result, $contact, $email = "";
   public $fnameErr , $lnameErr ,$contactErr, $imageErr, $emailErr = "";
   public $image_path="";
@@ -12,7 +12,6 @@ class form{
   public $Filedir ="./files";
   // function to check obtained values
   public function validate(){
-
       // First Name validation
       if (empty($_POST["fname"])) {
         $this->fnameErr = "First Name is required.";
@@ -34,6 +33,7 @@ class form{
       }
       $this->content.= $this->fnameErr;
       $this->content.= $this->lnameErr;
+
     }
     // function to refine the input values
     public function test_data($data) {
@@ -133,7 +133,6 @@ class form{
        else{
          $this->emailErr = "Enter valid email.";
        }
-
       }
     }
     $this->content.=$this->emailErr;
@@ -141,13 +140,13 @@ class form{
 
   // function to collect data to display within file
   public function output(){
-    
     if (!empty($this->fname) && !empty($this->lname) && empty($this->fnameErr) && empty($this->lnameErr)) {
       $this->content.= "<h1>Hello, $this->fname " . "$this->lname</h1>\n";
     }
   if(!empty($this->image_path)){
     $this->content.= "<img width=\"600\" height=\"600\" src =\"$this->image_path\" alt =\"Uploaded Image by user\" title=\"Image\">\n";
   }
+  
   if(!empty($this->marks)){
     $this->content.= "<table border=1>" ;
     $this->content.= "<tr><th>Subject</th><th>Marks</th></tr>\n";
@@ -177,22 +176,56 @@ class form{
     fclose($file);
     echo $this->content;
   }
-  
 }
 // Creates object when the form is submitted successfully.
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if($_SERVER["REQUEST_METHOD"] === "POST") {
   $input = new form();
-  $input->imgcheck();
-  $input->validate();
-  $input->resultcheck();
-  $input->numbercheck();
-  $input->emailcheck();
-  $input->output();
-  header("Content-type:application/docx");
-  header("Content-Disposition: attachment;Filename=\"{$input->fname}_{$input->lname}_data.docx\"");
-  header("Pragma: no-cache");
-  header("Expires: 0");
-  $input->file_input();
-  exit();
+  $q = isset($_GET["q"]) ? $_GET["q"] : null;
+  // switch case statement for calling functions based on the task number entered.
+   switch($q){
+    case 1:
+      $input->validate();
+      break;
+    case 2:
+      $input->validate();
+      $input->imgcheck();
+      break;
+    case 3:
+      $input->validate();
+      $input->imgcheck();
+      $input->resultcheck();
+      break;
+    case 4:
+      $input->validate();
+      $input->imgcheck();
+      $input->resultcheck();
+      $input->numbercheck();
+      break;
+    case 5:
+      $input->validate();
+      $input->imgcheck();
+      $input->resultcheck();
+      $input->numbercheck();
+      $input->emailcheck();
+      break;
+    case 6:
+      $input->validate();
+      $input->imgcheck();
+      $input->resultcheck();
+      $input->numbercheck();
+      $input->emailcheck();
+      $input->output();
+      header("Content-type:application/docx");
+      header("Content-Disposition: attachment;Filename=\"{$input->fname}_{$input->lname}_data.docx\"");
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      $input->file_input();
+      echo $input->content;
+      break;
+    default:
+      echo "Invalid Input";
+    }
+    echo $input->content;
+
 }
 ?>
