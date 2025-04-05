@@ -1,9 +1,9 @@
 <?php
 
 class form{
-
-  public $fname , $lname ,$result = "";
-  public $fnameErr , $lnameErr , $imageErr= "";
+ 
+  public $fname , $lname , $result, $contact = "";
+  public $fnameErr , $lnameErr ,$contactErr, $imageErr= "";
   public $image_path="";
   public $marks =[];
   
@@ -14,7 +14,7 @@ class form{
       if (empty($_POST["fname"])) {
         $this->fnameErr = "First Name is required.";
       } else {
-        $this->fname = $this-> test_data($_POST["fname"]);
+        $this->fname = $this->test_data($_POST["fname"]);
         if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
           $this->fnameErr = "Only alphabets are allowed for First Name.";
         }
@@ -29,6 +29,7 @@ class form{
           $this->lnameErr = "Only alphabets are allowed for Last Name.";
         }
       }
+
     }
     // function to refine the input values
     public function test_data($data) {
@@ -53,10 +54,10 @@ class form{
             return;
       }
       if (move_uploaded_file($_FILES["image"]["tmp_name"], $image_file)) {
-        $this->image_path = $image_file;
+        $this->image_path=$image_file;
         
     } else {
-        $this->imageErr="Sorry, there was an error uploading your file.";
+        $this->imageErr = "Sorry, there was an error uploading your file.";
     }
 
     }
@@ -75,6 +76,17 @@ class form{
       }
     }
   }
+  // function to validate contact number
+  public function numbercheck(){
+    if (empty($_POST["contact"])) {
+      $this->contactErr = "Contact Number is required.";
+    } else {
+      $this->contact = $this-> test_data($_POST["contact"]);
+      if (!preg_match('/^(\+91)[6-9]\d{9}$/', $this->contact)) {
+        $this->contactErr = "Only Numeric 10 digit number is allowed";
+      }
+    }
+  }
   
 }
 // Creates object when the form is submitted successfully.
@@ -83,5 +95,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $input->imgcheck();
   $input->validate();
   $input->resultcheck();
+  $input->numbercheck();
 }
 ?>
