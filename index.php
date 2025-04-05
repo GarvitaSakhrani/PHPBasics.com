@@ -52,35 +52,5 @@
   
   <input type="submit" value="Submit">
 </form>
-<!-- Output to be displayed -->
-<?php
-  if(!empty($input->image_path)){
-    echo"<img width=\"600\" height=\"600\" src =\"$input->image_path\" alt =\"Uploaded Image by user\" title=\"Image\">";
-  }
-  if (!empty($input->fname) && !empty($input->lname) && empty($input->fnameErr) && empty($input->lnameErr)) {
-      echo "<h1>Hello, $input->fname " . "$input->lname</h1>";
-  }
-  if(!empty($input->marks)){
-    echo "<table border=1>" ;
-    echo "<tr><th>Subject</th><th>Marks</th></tr>";
-    foreach($input->marks as $a){
-      echo "<tr>";
-      echo "<td>" . $a['subject'] . "</td>";
-      echo "<td>" . $a['mark'] . "</td>";
-      echo "</tr>";
-  }
-    echo "</table>";
-  }
-  echo"<br>";
-  if(!empty($input->contact) && empty($input->contactErr)){
-    echo "<h3>Contact Details:" . $input->contact . ".</h3>";
-  }
-  echo"<br>";
-  if(!empty($input->email) && empty($input->emailErr)){
-    echo "<h3>Email Details:" . $input->email . ".</h3>";
-  }
-  ?>
-
 </body>
 </html>
-

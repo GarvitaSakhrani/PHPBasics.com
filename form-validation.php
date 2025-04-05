@@ -7,7 +7,9 @@ class form{
   public $image_path="";
   public $marks =[];
   public $validemail ="";
-  
+  public $filename="";
+  public $content="";
+  public $Filedir ="./files";
   // function to check obtained values
   public function validate(){
 
@@ -30,7 +32,8 @@ class form{
           $this->lnameErr = "Only alphabets are allowed for Last Name.";
         }
       }
-
+      $this->content.= $this->fnameErr;
+      $this->content.= $this->lnameErr;
     }
     // function to refine the input values
     public function test_data($data) {
@@ -60,8 +63,13 @@ class form{
     } else {
         $this->imageErr = "Sorry, there was an error uploading your file.";
     }
-
+    
     }
+    if ($this->image_path) {
+      $imageData = base64_encode(file_get_contents($this->image_path));
+      $this->image_path = 'data:image/' . pathinfo($this->image_path, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+  }
+    $this->content.=$this->imageErr;
   }
   // function to validate entered subject and marks
   public function resultcheck(){
@@ -87,6 +95,7 @@ class form{
         $this->contactErr = "Only Numeric 10 digit number is allowed";
       }
     }
+    $this->content.=$this->contactErr;
   }
 
   // function to validate email address
@@ -97,7 +106,7 @@ class form{
     else{
       $this->email = $this->test_data($_POST["email"]);
       if(!preg_match("/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/",$this->email)){
-        $this->emailErr = "Please Enter valid email address.";
+        $this->emailErr = "Please enter correct email address.";
       }
       else{
         // API Access Key
@@ -127,6 +136,46 @@ class form{
 
       }
     }
+    $this->content.=$this->emailErr;
+  }
+
+  // function to collect data to display within file
+  public function output(){
+    
+    if (!empty($this->fname) && !empty($this->lname) && empty($this->fnameErr) && empty($this->lnameErr)) {
+      $this->content.= "<h1>Hello, $this->fname " . "$this->lname</h1>\n";
+    }
+  if(!empty($this->image_path)){
+    $this->content.= "<img width=\"600\" height=\"600\" src =\"$this->image_path\" alt =\"Uploaded Image by user\" title=\"Image\">\n";
+  }
+  if(!empty($this->marks)){
+    $this->content.= "<table border=1>" ;
+    $this->content.= "<tr><th>Subject</th><th>Marks</th></tr>\n";
+    foreach($this->marks as $a){
+      $this->content.= "<tr>";
+      $this->content.= "<td>" . $a['subject'] . "</td>";
+      $this->content.= "<td>" . $a['mark'] . "</td>";
+      $this->content.= "</tr>\n";
+  }
+  $this->content.= "</table>\n";
+  }
+ 
+  if(!empty($this->contact) && empty($this->contactErr)){
+    $this->content.= "<h3>Contact Details:" . $this->contact . ".</h3>\n";
+  }
+ 
+  if(!empty($this->email) && empty($this->emailErr)){
+    $this->content.= "<h3>Email Details:" . $this->email . ".</h3>\n";
+  }
+ 
+  }
+ //function to store data within a file
+  public function file_input(){
+    $filename = $this->fname ."_". $this->lname ."_data.docx"; 
+    $file = fopen($this->Filedir . "/" .$filename,"w") or die("Unable to open file!");
+    fwrite($file,$this->content);
+    fclose($file);
+    echo $this->content;
   }
   
 }
@@ -138,5 +187,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $input->resultcheck();
   $input->numbercheck();
   $input->emailcheck();
+  $input->output();
+  header("Content-type:application/docx");
+  header("Content-Disposition: attachment;Filename=\"{$input->fname}_{$input->lname}_data.docx\"");
+  header("Pragma: no-cache");
+  header("Expires: 0");
+  $input->file_input();
+  exit();
 }
 ?>
