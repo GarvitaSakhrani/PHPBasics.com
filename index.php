@@ -44,6 +44,11 @@
   <input type="text" name="contact">
   <span class="error">* <?php echo $input->contactErr;?></span>
   <br><br>
+
+  <label for="email">Email:</label>
+  <input type="text" name="email">
+  <span class="error">* <?php echo $input->emailErr;?></span>
+  <br><br>
   
   <input type="submit" value="Submit">
 </form>
@@ -69,6 +74,10 @@
   echo"<br>";
   if(!empty($input->contact) && empty($input->contactErr)){
     echo "<h3>Contact Details:" . $input->contact . ".</h3>";
+  }
+  echo"<br>";
+  if(!empty($input->email) && empty($input->emailErr)){
+    echo "<h3>Email Details:" . $input->email . ".</h3>";
   }
   ?>
 

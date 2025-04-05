@@ -2,10 +2,11 @@
 
 class form{
  
-  public $fname , $lname , $result, $contact = "";
-  public $fnameErr , $lnameErr ,$contactErr, $imageErr= "";
+  public $fname , $lname , $result, $contact, $email = "";
+  public $fnameErr , $lnameErr ,$contactErr, $imageErr, $emailErr = "";
   public $image_path="";
   public $marks =[];
+  public $validemail ="";
   
   // function to check obtained values
   public function validate(){
@@ -87,6 +88,46 @@ class form{
       }
     }
   }
+
+  // function to validate email address
+  public function emailcheck(){
+    if(empty($_POST["email"])){
+      $this->emailErr = "Email Id is required.";
+    }
+    else{
+      $this->email = $this->test_data($_POST["email"]);
+      if(!preg_match("/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/",$this->email)){
+        $this->emailErr = "Please Enter valid email address.";
+      }
+      else{
+        // API Access Key
+        $access_key = '2ba2666ced6f9df40d4ecf002b34e212';
+
+        //email address to check
+        $email_address = $this->email;
+
+        // Initialize CURL
+        $ch = curl_init('http://apilayer.net/api/bulk_check?access_key='.$access_key.'&email='.$email_address.'');  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Store the data:
+        $json = curl_exec($ch);
+        curl_close($ch);
+
+        // Decode JSON response:
+       $validationResult = json_decode($json, true);
+       
+      //Condition to check if mail address is available
+       if($validationResult['mx_found']){
+        echo "Email registered successfully.";
+       }
+       else{
+         $this->emailErr = "Enter valid email.";
+       }
+
+      }
+    }
+  }
   
 }
 // Creates object when the form is submitted successfully.
@@ -96,5 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $input->validate();
   $input->resultcheck();
   $input->numbercheck();
+  $input->emailcheck();
 }
 ?>
