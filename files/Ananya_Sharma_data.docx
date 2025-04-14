@@ -1,0 +1,7 @@
+Enter valid email.<h1>Hello, Ananya Sharma</h1>
+<img width="600" height="600" src ="http://PHPBasics.com/uploads/Screenshot from 2025-04-11 11-47-52.png" alt ="Uploaded Image by user" title="Image">
+<table border=1><tr><th>Subject</th><th>Marks</th></tr>
+<tr><td>Eng</td><td>80</td></tr>
+<tr><td>Maths</td><td>90</td></tr>
+</table>
+<h3>Contact Details:+918955376557.</h3>
