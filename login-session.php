@@ -2,12 +2,9 @@
 session_start();
 // If user already logged in then directly redirect it to the required page.
 if($_SESSION['logged_in'] == true){
-  if(isset($_GET['redirect'])){
-    $test = $_GET['redirect'];
-  }
-  else{
-    $test="index.php?q=4";
-  }
+  $test = isset($_GET['redirect'])? $_GET['redirect']: 'index.php?q=4';
+  header("Location: $test");
+  exit();
 }
 
 // If user not logged in then authenticate the user and redirect it to the required page.
@@ -19,12 +16,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
    $registeredPassword = "root1234";
 
    if($username === $registeredUsername && $password === $registeredPassword){
-      $_SESSION['logged_in'] = true;
-      if(isset($_GET['redirect'])) {
-        $test = $_GET['redirect'];
-    } else {
-        $test = 'index.php?q=4';
-    }
+    $_SESSION['logged_in'] = true;
+    $test = isset($_GET['redirect'])? $_GET['redirect']: 'index.php?q=4';
     header("Location: $test");
     exit();
    }
@@ -61,7 +54,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
       <!-- if any error encountered, then display error -->
       <?php
       if(isset($showError)){
-        echo '<span class="error">$showError</span>';
+        echo '<span class="error">' . $showError . '</span>';
       }
       ?>
       <input type="submit" value="submit">

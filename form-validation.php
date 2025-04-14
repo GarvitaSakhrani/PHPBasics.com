@@ -48,7 +48,7 @@ class form{
         $this->imageErr = "Upload an image.";
       }
       else{
-        $image_dir = "./uploads";
+        $image_dir = "/var/www/PHPBasics.com/uploads";
         $image_file = $image_dir . "/" . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($image_file,PATHINFO_EXTENSION));
         $extensions = array("jpeg","jpg","png","gif"); 
@@ -58,17 +58,13 @@ class form{
             return;
       }
       if (move_uploaded_file($_FILES["image"]["tmp_name"], $image_file)) {
-        $this->image_path=$image_file;
+        $this->image_path= "http://PHPBasics.com/uploads/" . basename($_FILES["image"]["name"]);
         
     } else {
         $this->imageErr = "Sorry, there was an error uploading your file.";
     }
     
     }
-    if ($this->image_path) {
-      $imageData = base64_encode(file_get_contents($this->image_path));
-      $this->image_path = 'data:image/' . pathinfo($this->image_path, PATHINFO_EXTENSION) . ';base64,' . $imageData;
-  }
     $this->content.=$this->imageErr;
   }
   // function to validate entered subject and marks

@@ -74,6 +74,5 @@
     echo "</table>";
   }
   ?>
-
 </body>
 </html>

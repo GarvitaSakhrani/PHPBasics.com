@@ -82,7 +82,5 @@
     echo "<h3>Contact Details:" . $input->contact . ".</h3>";
   }
   ?>
-
 </body>
 </html>
-

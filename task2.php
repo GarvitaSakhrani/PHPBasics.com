@@ -59,6 +59,5 @@
       echo "<h1>Hello, $input->fname " . "$input->lname</h1>";
   }
   ?>
-
 </body>
 </html>

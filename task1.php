@@ -49,7 +49,7 @@
 <!-- If both fields are error free then set Full Name -->
 <?php if (!empty($input->fname) && !empty($input->lname) && empty($input->fnameErr) && empty($input->lnameErr)) {
       echo "<h1>Hello, $input->fname " . "$input->lname</h1>";
-  }?>
-  
+  }
+  ?>
 </body>
 </html>
