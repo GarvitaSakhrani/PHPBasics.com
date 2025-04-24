@@ -49,6 +49,9 @@ class form{
       }
       else{
         $image_dir = "/var/www/PHPBasics.com/uploads";
+        if(!file_exists($image_dir)){
+          mkdir($image_dir,0777,true);
+        }
         $image_file = $image_dir . "/" . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($image_file,PATHINFO_EXTENSION));
         $extensions = array("jpeg","jpg","png","gif"); 
@@ -167,6 +170,9 @@ class form{
   }
  //function to store data within a file
   public function file_input(){
+    if(!file_exists($this->Filedir)){
+      mkdir($this->Filedir,0777,true);
+    }
     $filename = $this->fname ."_". $this->lname ."_data.docx"; 
     $file = fopen($this->Filedir . "/" .$filename,"w") or die("Unable to open file!");
     fwrite($file,$this->content);
