@@ -45,6 +45,9 @@ class form{
       }
       else{
         $image_dir = "./uploads";
+        if(!file_exists($image_dir)){
+          mkdir($image_dir,0777,true);
+        }
         $image_file = $image_dir . "/" . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($image_file,PATHINFO_EXTENSION));
         $extensions = array("jpeg","jpg","png","gif"); 
