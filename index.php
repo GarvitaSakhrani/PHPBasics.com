@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form</title>
+  <link rel = "stylesheet" href = "./css/style.css">
   <!-- link for embedding jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="./js/index.js"></script>
@@ -17,7 +18,7 @@
 <?php require 'form-validation.php';?>
 
 <!-- Form to input First Name, Last Name and display Full Name -->
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<form id = "form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <label for="fname">First Name:</label>
   <input type="text" id="fname" name="fname">
   <span class="error">* <?php echo $input->fnameErr;?></span>
