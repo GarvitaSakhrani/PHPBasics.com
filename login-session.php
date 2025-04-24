@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 // If user already logged in then directly redirect it to the required page.
 if($_SESSION['logged_in'] == true){
   $test = isset($_GET['redirect'])? $_GET['redirect']: 'index.php?q=4';
@@ -32,23 +33,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
   <title>User Authentication</title>
-  <!-- red color to display error -->
-  <style>
-    .error{
-      color:#ff0000;
-    }
-  </style>
 </head>
 <body>
   <div class="login-form">
     <h1>Sign In</h1>
-    <form method ="post" action="login-session.php">
-      <label for="username">Username</label><br>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . (isset($_GET['redirect']) ? '?redirect=' . $_GET['redirect'] : ''); ?>">
+      <label for="username">Username</label>
       <input type="text" name="username" id="username" required>
       <br><br>
 
-      <label for="password">Password</label><br>
+      <label for="password">Password</label>
       <input type="password" name="password" id="password" required>
       <br><br>
       <!-- if any error encountered, then display error -->
@@ -57,7 +53,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         echo '<span class="error">' . $showError . '</span>';
       }
       ?>
+      <div class="submit-wrapper">
       <input type="submit" value="submit">
+      </div>
     </form>
 
   </div>

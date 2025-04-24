@@ -2,9 +2,10 @@
 
 class form{
 
-  public $fname , $lname , $result, $contact, $email = "";
-  public $fnameErr , $lnameErr ,$contactErr, $imageErr, $emailErr = "";
+  public $fname = "", $lname = "", $result = "", $contact = "", $email = "";
+  public $fnameErr = "", $lnameErr = "", $contactErr = "", $imageErr = "", $emailErr = "";
   public $image_path="";
+  public $resultErr="";
   public $marks =[];
   public $validemail ="";
   public $filename="";
@@ -49,6 +50,9 @@ class form{
       }
       else{
         $image_dir = "/var/www/PHPBasics.com/uploads";
+        if (!file_exists($image_dir)) {
+          mkdir($image_dir, 0777, true);
+        }
         $image_file = $image_dir . "/" . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($image_file,PATHINFO_EXTENSION));
         $extensions = array("jpeg","jpg","png","gif"); 
@@ -76,10 +80,25 @@ class form{
       if(!empty($x)){
         $item = explode("|",$x);
         if(count($item)==2 && is_numeric($item[1])){
-          $this->marks[] = ["subject"=>trim($item[0]), "mark"=>trim($item[1])];
+          $subject = trim($item[0]);
+          $subject = preg_replace('/\s+/', '', $subject);
+          $mark = trim($item[1]);
+          if(preg_match("/^[a-zA-Z ]+$/", $subject)){
+          $this->marks[] = ["subject"=>$subject, "mark"=>$mark];
+          }
+          else{
+            $this->resultErr = "Only alphabets are allowed in subject field.";
+          }
+        }
+        else{
+          $this->resultErr = "Please enter valid inputs";
         }
       }
+      else{
+        $this->resultErr = "Value is required.";
+      }
     }
+    $this->content .= $this->resultErr;
   }
   // function to validate contact number
   public function numbercheck(){
@@ -143,7 +162,7 @@ class form{
     $this->content.= "<img width=\"600\" height=\"600\" src =\"$this->image_path\" alt =\"Uploaded Image by user\" title=\"Image\">\n";
   }
   
-  if(!empty($this->marks)){
+  if(!empty($this->marks) && empty($this->resultErr)){
     $this->content.= "<table border=1>" ;
     $this->content.= "<tr><th>Subject</th><th>Marks</th></tr>\n";
     foreach($this->marks as $a){
@@ -162,12 +181,15 @@ class form{
   if(!empty($this->email) && empty($this->emailErr)){
     $this->content.= "<h3>Email Details:" . $this->email . ".</h3>\n";
   }
- 
+
   }
  //function to store data within a file
   public function file_input(){
-    $filename = $this->fname ."_". $this->lname ."_data.docx"; 
-    $file = fopen($this->Filedir . "/" .$filename,"w") or die("Unable to open file!");
+    if(!file_exists($this->Filedir)){
+      mkdir($this->Filedir,0777,true);
+    }
+    $this->filename = $this->fname ."_". $this->lname ."_data.docx"; 
+    $file = fopen($this->Filedir . "/" .$this->filename,"w") or die("Unable to open file!");
     fwrite($file,$this->content);
     fclose($file);
     echo $this->content;
