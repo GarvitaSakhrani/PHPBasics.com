@@ -6,10 +6,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form</title>
+  <link rel="stylesheet" href="./css/style.css">
   <!-- link for embedding jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="./js/index.js"></script>
-  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 <!-- embedding php script for checking the validity of form -->
@@ -36,7 +36,7 @@
   <br><br>
 
   <label for="result">Enter Marks(Please enter in the format subject|marks, one perline):</label><br>
-  <textarea name="result" rows="5" cols="20"></textarea>
+  <textarea id= "result" name="result" rows="5" cols="20"></textarea>
   <br><br>
 
   <label for="contact">Contact Number(Enter number followed by country code):</label>
