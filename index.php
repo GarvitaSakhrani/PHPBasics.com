@@ -4,20 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form</title>
+  <link  rel = "stylesheet" href="./css/style.css">
   <!-- links for embedding jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="./js/index.js"></script>
-  <!-- css to display error message -->
-  <style>
-    .error {color: #FF0000;}
-  </style>
 </head>
 <body>
 <!-- embedding php script for checking the validity of form -->
 <?php require 'form-validation.php';?>
 
 <!-- Form to input First Name, Last Name and display Full Name -->
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+<form id="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
   <label for="fname">First Name:</label>
   <input type="text" id="fname" name="fname">
   <span class="error">* <?php echo $input->fnameErr;?></span>
@@ -38,7 +35,7 @@
   <br><br>
 
   <label for="result">Enter Marks(Please enter in the format subject|marks, one perline):</label><br>
-  <textarea name="result" rows="5" cols="20"></textarea>
+  <textarea id ="result" name="result" rows="5" cols="20"></textarea>
   <br><br>
   
   <input type="submit" value="Submit">
