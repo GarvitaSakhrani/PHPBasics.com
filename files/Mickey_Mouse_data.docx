@@ -1,7 +1,0 @@
-Enter valid email.<h1>Hello, Mickey Mouse</h1>
-<img width="600" height="600" src ="http://PHPBasics.com/uploads/Screenshot from 2025-02-25 11-18-51.png" alt ="Uploaded Image by user" title="Image">
-<table border=1><tr><th>Subject</th><th>Marks</th></tr>
-<tr><td>eng</td><td>80</td></tr>
-<tr><td>math</td><td>70</td></tr>
-</table>
-<h3>Contact Details:+919876543212.</h3>
