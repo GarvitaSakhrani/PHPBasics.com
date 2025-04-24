@@ -48,6 +48,19 @@
   </div>
   <br>
 </form>
+<script>
+  $(document).ready(function() {
+    const contact = document.getElementById("contact");
+    if (!contact.value.startsWith("+91")) {
+        contact.value = "+91";
+    }
+    contact.addEventListener("input", function() {
+      if (!contact.value.startsWith("+91")) {
+        contact.value = "+91" + contact.value.replace(/\D/g, "").slice(0, 10);
+      }
+    });
+  });
+</script>
 <!-- Added links to move from one page to another -->
 <div class="navigation">
   <a href="index.php?q=1">Task 1</a>

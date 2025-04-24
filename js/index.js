@@ -1,13 +1,4 @@
 $(document).ready(function() {
-  const contact = document.getElementById("contact");
-  if(!contact.value.startsWith("+91")) {
-      contact.value = "+91";
-  }
-  contact.addEventListener("input", () => {
-    if(!contact.value.startsWith("+91")) {
-      contact.value = "+91" + contact.value.replace(/\D/g, "").slice(0, 10);
-    }
-  });
   $('#fname').on('input', function () {
     const val = $(this).val().trim();
     if (val === "") {
